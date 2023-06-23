@@ -13,6 +13,11 @@ public class Health
         _maxHealth = maxHealth;
     }
 
+
+    public float GetHealth()
+    {
+        return _currentHealth;
+    }
     public Health()
     {
         

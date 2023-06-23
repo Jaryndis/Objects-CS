@@ -9,7 +9,16 @@ public class Bullets : MonoBehaviour
     [SerializeField] float damage;
     [SerializeField] float speed;
 
+    private string targetTag;
 
+
+
+    public void SetBullet(float _damage, string _targetTag, float _speed = 10)
+    {
+        damage = _damage;
+        targetTag = _targetTag;
+        speed = _speed;
+    }
     private void Update()
     {
         Move();
@@ -17,7 +26,7 @@ public class Bullets : MonoBehaviour
 
     private void Move()
     {
-        throw new NotImplementedException();
+        
     }
 
     void Move(Transform target)
@@ -37,10 +46,15 @@ public class Bullets : MonoBehaviour
 
         void OnTriggerEnter2D(Collider2D collision)
         {
-            Debug.Log("Other object's name =" + collision.gameObject.name);
+            
 
+            if (!collision.gameObject.CompareTag(targetTag))
+            {
+                return;
+            }
             IDamageable damageable = collision.GetComponent<IDamageable>();
             Damage(damageable);
+            Debug.Log("Other object's name =" + collision.gameObject.name);
         }
     }
 }

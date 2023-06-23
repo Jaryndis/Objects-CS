@@ -20,7 +20,10 @@ public class PlayerInput : MonoBehaviour
         _vertical = Input.GetAxis("Vertical");
         _lookTarget = Input.mousePosition;
 
-        if (Input.GetMouseButton(0)) ;
+        if (Input.GetMouseButtonDown(0))
+        {
+            _player.Shoot();
+        }
     }
 
     private void FixedUpdate()

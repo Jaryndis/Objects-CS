@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Player : PlayableObjects
 {
@@ -9,10 +10,19 @@ public class Player : PlayableObjects
     [SerializeField] private Camera cam;
 
     private Rigidbody2D _playerRb;
+    [SerializeField] private float weaponDamage;
+    [SerializeField] private float bulletSpeed = 10;
+    [SerializeField] private Bullets bulletPrefab;
+
+    public Action<float> OnHealthUpdate;
     private void Start()
     {
         health = new Health(100, 0.5f, 100);
         _playerRb = GetComponent<Rigidbody2D>();
+
+        weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
+        
+        OnHealthUpdate?.Invoke(health.GetHealth());
     }
 
     public override void Move(Vector2 direction, Vector2 target)
@@ -30,16 +40,26 @@ public class Player : PlayableObjects
    public override void Shoot()
     {
         Debug.Log("Shooting bullets toward direction");
+        weapon.Shoot(bulletPrefab, this, "Enemy");
     }
 
     public override void Die()
     {
         Debug.Log("Player died");
+        Destroy(gameObject);
     }
 
     public override void GetDamage(float damage)
     {
+        Debug.Log("Player Damaged");
+        health.DeductHealth(damage);
         
+        OnHealthUpdate?.Invoke((health.GetHealth()));
+
+        if (health.GetHealth() <= 0)
+        {
+            Die();
+        }
     }
 
     public override void Attack(float interval)

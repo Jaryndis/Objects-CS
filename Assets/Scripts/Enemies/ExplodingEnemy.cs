@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : Enemy
+public class ExplodingEnemy : Enemy
 {
     [SerializeField] private float attackRange;
     [SerializeField] private float attackTime;
