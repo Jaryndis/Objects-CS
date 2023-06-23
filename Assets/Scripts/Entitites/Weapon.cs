@@ -18,7 +18,8 @@ public class Weapon
     
     public void Shoot(Bullets bullet, PlayableObjects player, string targetTag, float timeToDie = 5)
     {
-        Bullets tempBullet = GameObject.Instantiate(bullet, player.transform.position, player.transform.rotation);
+        var transform = player.transform;
+        Bullets tempBullet = GameObject.Instantiate(bullet, transform.position, transform.rotation);
         tempBullet.SetBullet(_damage, targetTag, _bulletSpeed);
         
         GameObject.Destroy(tempBullet.gameObject, timeToDie);

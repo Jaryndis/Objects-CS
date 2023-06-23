@@ -12,7 +12,7 @@ public class ExplodingEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        health = new Health(1, 0, 1);
+        Health = new Health(1, 0, 1);
     }
 
     protected override void Update()
@@ -32,7 +32,7 @@ public class ExplodingEnemy : Enemy
 
     public override void GetDamage(float damage)
     {
-        health.DeductHealth(damage);
+        Health.DeductHealth(damage);
     }
 
     public override void Attack(float interval)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,27 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        player.OnHealthUpdate += UpdateHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDisable()
+    {
+        player.OnHealthUpdate -= UpdateHealth;
+    }
+
+    public void UpdateHealth(float currentHealth)
+    {
+        txtHealth.SetText(currentHealth.ToString());
+    }
+
+    public void UpdateScore()
+    {
+        txtScore.SetText(GameManager.GetInstance().scoreManager.GetScore().ToString());
     }
 }

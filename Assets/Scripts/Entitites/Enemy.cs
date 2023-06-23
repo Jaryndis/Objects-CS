@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System;
 
 public class Enemy : PlayableObjects
 {
@@ -12,7 +13,15 @@ public class Enemy : PlayableObjects
 
     protected virtual void Start()
     {
-        Target = GameObject.FindWithTag("Player").transform;
+        try
+        {
+            Target = GameObject.FindWithTag("Player").transform;
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("There is no player in scene, Self-destruction executing");
+            Destroy(gameObject);
+        }
     }
 
     protected virtual void Update()
@@ -45,7 +54,7 @@ public class Enemy : PlayableObjects
 
     public override void Move(float speed)
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(Vector2.right * (speed * Time.deltaTime));
     }
     public override void Move(Vector2 direction)
     {
@@ -56,7 +65,7 @@ public class Enemy : PlayableObjects
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0,angle);
 
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(Vector2.right * (speed * Time.deltaTime));
     }
 
     public override void Shoot()
@@ -66,12 +75,20 @@ public class Enemy : PlayableObjects
 
     public override void Die()
     {
-        Debug.Log("Player died");
+        Debug.Log("Enemy died");
+        GameManager.GetInstance().NotifyDeath(this);
+        Destroy(gameObject);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public override void GetDamage(float damage)
     {
-        
+        Debug.Log("Enemy damaged!");
+            Health.DeductHealth(damage);
+            if (Health.GetHealth() <= 0)
+            {
+                Die();
+            }
     }
 
     public override void Attack(float interval)

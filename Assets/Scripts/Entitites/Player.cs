@@ -15,14 +15,14 @@ public class Player : PlayableObjects
     [SerializeField] private Bullets bulletPrefab;
 
     public Action<float> OnHealthUpdate;
-    private void Start()
+    private void Awake()
     {
-        health = new Health(100, 0.5f, 100);
+        Health = new Health(100, 0.5f, 100);
         _playerRb = GetComponent<Rigidbody2D>();
 
-        weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
+        Weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
         
-        OnHealthUpdate?.Invoke(health.GetHealth());
+        OnHealthUpdate?.Invoke(Health.GetHealth());
     }
 
     public override void Move(Vector2 direction, Vector2 target)
@@ -40,7 +40,7 @@ public class Player : PlayableObjects
    public override void Shoot()
     {
         Debug.Log("Shooting bullets toward direction");
-        weapon.Shoot(bulletPrefab, this, "Enemy");
+        Weapon.Shoot(bulletPrefab, this, "Enemy");
     }
 
     public override void Die()
@@ -52,11 +52,11 @@ public class Player : PlayableObjects
     public override void GetDamage(float damage)
     {
         Debug.Log("Player Damaged");
-        health.DeductHealth(damage);
+        Health.DeductHealth(damage);
         
-        OnHealthUpdate?.Invoke((health.GetHealth()));
+        OnHealthUpdate?.Invoke((Health.GetHealth()));
 
-        if (health.GetHealth() <= 0)
+        if (Health.GetHealth() <= 0)
         {
             Die();
         }

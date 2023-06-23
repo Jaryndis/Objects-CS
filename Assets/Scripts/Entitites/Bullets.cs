@@ -15,9 +15,9 @@ public class Bullets : MonoBehaviour
 
     public void SetBullet(float _damage, string _targetTag, float _speed = 10)
     {
-        damage = _damage;
-        targetTag = _targetTag;
-        speed = _speed;
+        this.damage = _damage;
+        this.targetTag = _targetTag;
+        this.speed = _speed;
     }
     private void Update()
     {
@@ -40,7 +40,7 @@ public class Bullets : MonoBehaviour
         {
             damageable.GetDamage(damage);
             Debug.Log("Damaged something");
-            LevelLoader.Score++;
+            GameManager.GetInstance().scoreManager.IncrementScore();
             Destroy(gameObject);
         }
 
@@ -52,8 +52,8 @@ public class Bullets : MonoBehaviour
             {
                 return;
             }
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            Damage(damageable);
+            IDamageable component = collision.GetComponent<IDamageable>();
+            Damage(component);
             Debug.Log("Other object's name =" + collision.gameObject.name);
         }
     }

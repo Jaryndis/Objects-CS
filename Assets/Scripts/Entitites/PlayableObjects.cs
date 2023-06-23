@@ -5,10 +5,10 @@ using UnityEngine;
 
 public abstract class PlayableObjects : MonoBehaviour, IDamageable
 {
-    private protected int testScore;
+    private protected int TestScore;
 
-    public Health health = new Health();
-    public Weapon weapon;
+    public Health Health = new Health();
+    public Weapon Weapon;
     
     /// <summary>
     /// Move the object/character in a <c>direction</c> towards a <c>target</c>.

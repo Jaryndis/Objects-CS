@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,10 +12,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform[] spawnPositions;
     private GameObject tempEnemy;
-    private Weapon meleeWeapon = new Weapon("Melee Weapon", 1, 0);
+    private Weapon meleeWeapon = new Weapon("Melee", 1, 0);
 
     private bool isEnemySpawning;
     [SerializeField] private float enemySpawnRate;
+
+    public ScoreManager scoreManager;
+    public PickupSpawner pickupSpawner;
     
 
     public static GameManager GetInstance()
@@ -44,12 +48,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EnemySpawner());
     }
 
+    void FindPlayer()
+    {
+        try
+        {
+            var player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("No player in the scene");
+        }
+    }
+    
+    // ReSharper disable Unity.PerformanceAnalysis
     void CreateEnemy()
     {
         Instantiate(enemyPrefab);
         tempEnemy = Instantiate(enemyPrefab);
         tempEnemy.transform.position = spawnPositions[Random.Range(0, spawnPositions.Length)].position;
-        tempEnemy.GetComponent<Enemy>().weapon = meleeWeapon;
+        tempEnemy.GetComponent<Enemy>().Weapon = meleeWeapon;
         tempEnemy.GetComponent<MeleeEnemy>().SetMeleeEnemy(2, 0.25f);
     }
 
@@ -69,4 +86,16 @@ public class GameManager : MonoBehaviour
             CreateEnemy();
         }
     }
+
+    public void NotifyDeath(Enemy enemy)
+    {
+        pickupSpawner.SpawnPickup(enemy.transform.position);
+    }
+
+    public Player GetPlayer()
+    {
+        return Player;
+    }
+
+    public Player Player { get; set; }
 }
