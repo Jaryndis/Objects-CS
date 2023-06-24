@@ -7,7 +7,6 @@ using System;
 
 public class Enemy : PlayableObjects
 {
-    private string _name;
     [SerializeField] protected float speed;
     protected Transform Target;
 
@@ -58,9 +57,9 @@ public class Enemy : PlayableObjects
     }
     public override void Move(Vector2 direction)
     {
-        var position = transform.position;
-        direction.x -= position.x;
-        direction.y -= position.y;
+        // var position = transform.position;
+        direction.x -= transform.position.x;
+        direction.y -= transform.position.y;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0,angle);
@@ -84,11 +83,11 @@ public class Enemy : PlayableObjects
     public override void GetDamage(float damage)
     {
         Debug.Log("Enemy damaged!");
-            Health.DeductHealth(damage);
-            if (Health.GetHealth() <= 0)
-            {
-                Die();
-            }
+        Health.DeductHealth(damage);
+        if(Health.GetHealth() <= 0)
+        {
+            Die();
+        }
     }
 
     public override void Attack(float interval)

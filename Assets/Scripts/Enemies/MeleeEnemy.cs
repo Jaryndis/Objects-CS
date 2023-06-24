@@ -39,15 +39,15 @@ public class MeleeEnemy : Enemy
         }
         else
         {
-            setSpeed = speed;
+            speed = setSpeed;
         }
     }
 
-    public override void GetDamage(float damage)
+    /*public override void GetDamage(float damage)
     {
         Health.DeductHealth(damage);
     }
-
+*/
     // ReSharper disable Unity.PerformanceAnalysis
     public override void Attack(float interval)
     {

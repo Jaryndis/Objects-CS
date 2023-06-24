@@ -9,16 +9,24 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
 
+    [SerializeField] private Player playerPrefab;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform[] spawnPositions;
     private GameObject tempEnemy;
     private Weapon meleeWeapon = new Weapon("Melee", 1, 0);
+
+    private Player player;
 
     private bool isEnemySpawning;
     [SerializeField] private float enemySpawnRate;
 
     public ScoreManager scoreManager;
     public PickupSpawner pickupSpawner;
+
+    public Action OnGameStart;
+    public Action OnGameEnd;
+
+    private bool isPlaying;
     
 
     public static GameManager GetInstance()
@@ -63,7 +71,6 @@ public class GameManager : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     void CreateEnemy()
     {
-        Instantiate(enemyPrefab);
         tempEnemy = Instantiate(enemyPrefab);
         tempEnemy.transform.position = spawnPositions[Random.Range(0, spawnPositions.Length)].position;
         tempEnemy.GetComponent<Enemy>().Weapon = meleeWeapon;
@@ -94,8 +101,61 @@ public class GameManager : MonoBehaviour
 
     public Player GetPlayer()
     {
-        return Player;
+        return player;
     }
 
     public Player Player { get; set; }
+
+    public bool IsPlaying()
+    {
+        return isPlaying;
+    }
+
+    public void StartGame()
+    {
+        enemySpawnRate = 1;
+
+        player = Instantiate(playerPrefab, Vector2.zero, Quaternion.identity);
+        player.OnDeath += StopGame;
+        isPlaying = true;
+        
+        OnGameStart?.Invoke();
+        StartCoroutine(GameStarter());
+    }
+
+    private void StopGame()
+    {
+        EndGame();
+    }
+
+    IEnumerator GameStarter()
+    {
+        yield return new WaitForSeconds(2);
+        isEnemySpawning = true;
+        StartCoroutine(EnemySpawner());
+    }
+
+    public void EndGame()
+    {
+        enemySpawnRate = 0;
+        ScoreManager.SetHighScore();
+
+        StartCoroutine(GameStopper());
+
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    IEnumerator GameStopper()
+    {
+        isEnemySpawning = false;
+        yield return new WaitForSeconds(2);
+        isPlaying = false;
+
+        foreach (Enemy item in FindObjectsOfType(typeof(Enemy)))
+        {
+            Destroy(item.gameObject);
+        }
+        
+        OnGameEnd?.Invoke();
+    }
 }
