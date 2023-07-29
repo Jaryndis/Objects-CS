@@ -26,7 +26,7 @@ public class Bullets : MonoBehaviour
 
     private void Move()
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(Vector2.right * (speed * Time.deltaTime));
     }
 
     void Move(Transform target)
@@ -44,17 +44,16 @@ public class Bullets : MonoBehaviour
             Destroy(gameObject);
         }
 
-        void OnTriggerEnter2D(Collider2D collision)
+    }
+    
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.gameObject.CompareTag(targetTag))
         {
-            
-
-            if (!collision.gameObject.CompareTag(targetTag))
-            {
-                return;
-            }
-            IDamageable component = collision.GetComponent<IDamageable>();
-            Damage(component);
-            Debug.Log("Other object's name =" + collision.gameObject.name);
+            return;
         }
+        IDamageable component = collision.GetComponent<IDamageable>();
+        Damage(component);
+        Debug.Log("Other object's name =" + collision.gameObject.name);
     }
 }

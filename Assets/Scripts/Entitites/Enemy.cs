@@ -83,8 +83,8 @@ public class Enemy : PlayableObjects
     public override void GetDamage(float damage)
     {
         Debug.Log("Enemy damaged!");
-        Health.DeductHealth(damage);
-        if(Health.GetHealth() <= 0)
+        health.DeductHealth(damage);
+        if(health.GetHealth() <= 0)
         {
             Die();
         }

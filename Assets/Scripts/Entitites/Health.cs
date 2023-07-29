@@ -47,7 +47,7 @@ public class Health
 
     public void DeductHealth(float value)
     {
-        _currentHealth -= Mathf.Min(0, _currentHealth - value);
+        _currentHealth = Mathf.Max(0, _currentHealth - value);
         OnHealthUpdate?.Invoke(_currentHealth);
     }
 

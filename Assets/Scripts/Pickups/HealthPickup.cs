@@ -21,7 +21,7 @@ public class HealthPickup : Pickup, IDamageable
         float health = Random.Range(healthMin, healthMax);
 
         var player = GameManager.GetInstance().GetPlayer();
-        player.Health.AddHealth(health);
+        player.health.AddHealth(health);
         
         Debug.Log($"Added {health} health to the player");
     }

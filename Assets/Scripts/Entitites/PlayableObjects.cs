@@ -7,8 +7,8 @@ public abstract class PlayableObjects : MonoBehaviour, IDamageable
 {
     private protected int TestScore;
 
-    public Health Health = new Health();
-    public Weapon Weapon;
+    public Health health = new Health();
+    public Weapon weapon;
     
     /// <summary>
     /// Move the object/character in a <c>direction</c> towards a <c>target</c>.

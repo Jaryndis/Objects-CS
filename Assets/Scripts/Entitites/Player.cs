@@ -19,10 +19,10 @@ public class Player : PlayableObjects
     // public Action<float> OnHealthUpdate;
     private void Awake()
     {
-        Health = new Health(100, 0.5f, 50);
+        health = new Health(100, 0.5f, 50);
         _playerRb = GetComponent<Rigidbody2D>();
 
-        Weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
+        weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
         
         //OnHealthUpdate?.Invoke(Health.GetHealth());
         cam = Camera.main;
@@ -43,7 +43,7 @@ public class Player : PlayableObjects
    public override void Shoot()
     {
         Debug.Log("Shooting bullets toward direction");
-        Weapon.Shoot(bulletPrefab, this, "Enemy");
+        weapon.Shoot(bulletPrefab, this, "Enemy");
     }
 
     public override void Die()
@@ -56,11 +56,11 @@ public class Player : PlayableObjects
     public override void GetDamage(float damage)
     {
         Debug.Log("Player Damaged");
-        Health.DeductHealth(damage);
+        health.DeductHealth(damage);
         
         //OnHealthUpdate?.Invoke((Health.GetHealth()));
 
-        if (Health.GetHealth() <= 0)
+        if (health.GetHealth() <= 0)
         {
             Die();
         }
@@ -73,6 +73,6 @@ public class Player : PlayableObjects
 
     private void Update()
     {
-        Health.RegenHealth();
+        health.RegenHealth();
     }
 }

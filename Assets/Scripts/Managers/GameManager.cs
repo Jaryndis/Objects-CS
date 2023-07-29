@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         tempEnemy = Instantiate(enemyPrefab);
         tempEnemy.transform.position = spawnPositions[Random.Range(0, spawnPositions.Length)].position;
-        tempEnemy.GetComponent<Enemy>().Weapon = meleeWeapon;
+        tempEnemy.GetComponent<Enemy>().weapon = meleeWeapon;
         tempEnemy.GetComponent<MeleeEnemy>().SetMeleeEnemy(2, 0.25f);
     }
 

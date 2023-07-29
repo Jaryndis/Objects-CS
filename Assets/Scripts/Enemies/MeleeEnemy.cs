@@ -19,7 +19,7 @@ public class MeleeEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        Health = new Health(1, 0, 1);
+        health = new Health(1, 0, 1);
         setSpeed = speed;
     }
 
@@ -58,7 +58,7 @@ public class MeleeEnemy : Enemy
         else
         {
             timer = 0;
-            Target.GetComponent<IDamageable>().GetDamage(Weapon.GetDamage());
+            Target.GetComponent<IDamageable>().GetDamage(weapon.GetDamage());
         }
     }
 

@@ -53,14 +53,14 @@ public class UIManager : MonoBehaviour
         txtScore.SetText("0");
 
         player = GameManager.GetInstance().GetPlayer();
-        player.Health.OnHealthUpdate += UpdateHealth;
+        player.health.OnHealthUpdate += UpdateHealth;
 
         menuCanvas.SetActive(false);
     }
     
     public void GameOver()
     {
-        player.Health.OnHealthUpdate -= UpdateHealth;
+        player.health.OnHealthUpdate -= UpdateHealth;
         lblGameOverText.SetActive(true);
         menuCanvas.SetActive(true);
     }
